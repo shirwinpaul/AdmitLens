@@ -2,7 +2,7 @@
  * Browser-side API helpers. Never throw — always return a friendly result.
  */
 import { AI_BUSY_MESSAGE, AI_CONFIG } from "@/config/ai";
-import { MAX_PDF_UPLOAD_BYTES } from "@/config/limits";
+import { FILE_TOO_LARGE_MESSAGE, MAX_PDF_UPLOAD_BYTES } from "@/config/limits";
 import type { ExtractedDocument } from "./extract";
 import type { ResumeReviewResponse, SopReviewResponse } from "./schemas";
 import { readStorage, STORAGE_KEYS } from "./storage";
@@ -22,6 +22,8 @@ async function send<T>(url: string, init: RequestInit): Promise<ApiResult<T>> {
   try {
     const res = await fetch(url, { ...init, signal: controller.signal });
     const body = (await res.json().catch(() => null)) as (T & { error?: string }) | null;
+    // Vercel's own body-size rejection is plain text, so map 413 explicitly.
+    if (res.status === 413) return { ok: false, error: body?.error || FILE_TOO_LARGE_MESSAGE };
     if (!res.ok || !body) return { ok: false, error: body?.error || AI_BUSY_MESSAGE };
     return { ok: true, data: body };
   } catch {

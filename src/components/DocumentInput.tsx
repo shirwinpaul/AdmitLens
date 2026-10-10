@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import { MAX_PDF_UPLOAD_BYTES } from "@/config/limits";
+import { MAX_FILE_MB } from "@/config/limits";
 import { countWords } from "@/lib/wordCount";
 import {
   ExtractionError,
@@ -81,7 +81,7 @@ export function DocumentInput({ noun, value, onChange, minChars = 200 }: Props) 
             📄
           </p>
           <p className="mt-2 font-medium">Drag &amp; drop your {noun} here</p>
-          <p className="text-sm text-muted">PDF or Word (.docx), up to 5 MB</p>
+          <p className="text-sm text-muted">PDF or Word (.docx), up to {MAX_FILE_MB} MB</p>
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
@@ -140,7 +140,6 @@ export function DocumentInput({ noun, value, onChange, minChars = 200 }: Props) 
 function DocumentPreview({ doc, minChars }: { doc: ExtractedDocument; minChars: number }) {
   const words = countWords(doc.text);
   const tooShort = !doc.isScanned && doc.text.length < minChars;
-  const largePdf = doc.pdfFile && doc.pdfFile.size > MAX_PDF_UPLOAD_BYTES;
   return (
     <div className="rounded-2xl border border-line bg-surface p-4 shadow-card">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -153,11 +152,6 @@ function DocumentPreview({ doc, minChars }: { doc: ExtractedDocument; minChars: 
           This PDF looks like a scanned image, so we could read very little text. That&apos;s okay — our main AI
           (Gemini) can read scans directly. Note: our backup AI only reads text, so it won&apos;t work for this file
           if Gemini is busy.
-        </p>
-      )}
-      {largePdf && !doc.isScanned && (
-        <p className="mt-3 text-sm text-muted">
-          This PDF is over 4 MB, so we&apos;ll review the extracted text below instead of the file itself.
         </p>
       )}
       {tooShort && (

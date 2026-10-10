@@ -2,7 +2,7 @@ import { isMockMode } from "@/config/ai";
 import { mockResumeReview } from "@/lib/ai/mock";
 import { reviewResume } from "@/lib/ai/review";
 import { aiErrorResponse, enforceRateLimit, jsonError, jsonOk, sleep, userGeminiKey } from "@/lib/api";
-import { MAX_PDF_UPLOAD_BYTES } from "@/config/limits";
+import { FILE_TOO_LARGE_MESSAGE, MAX_PDF_UPLOAD_BYTES } from "@/config/limits";
 import { resumeRequestSchema, type ResumeReviewResponse } from "@/lib/schemas";
 
 export const runtime = "nodejs";
@@ -12,7 +12,7 @@ export const maxDuration = 120;
 /**
  * POST multipart/form-data:
  *  - payload: JSON (ResumeRequest)
- *  - pdf:     optional PDF file (≤ 4 MB) for Gemini to read directly
+ *  - pdf:     optional PDF file (≤ 3 MB) for Gemini to read directly
  * Nothing is stored or logged; the document lives only in this request's memory.
  */
 export async function POST(request: Request) {
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
   let pdfBase64: string | undefined;
   const pdf = form.get("pdf");
   if (pdf instanceof File && pdf.size > 0) {
-    if (pdf.size > MAX_PDF_UPLOAD_BYTES) return jsonError(413, "This PDF is too large to send. Please use a file under 4 MB.");
+    if (pdf.size > MAX_PDF_UPLOAD_BYTES) return jsonError(413, FILE_TOO_LARGE_MESSAGE);
     const bytes = Buffer.from(await pdf.arrayBuffer());
     if (bytes.subarray(0, 5).toString("latin1") !== "%PDF-") return jsonError(400, "That file doesn't look like a valid PDF.");
     pdfBase64 = bytes.toString("base64");

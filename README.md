@@ -63,8 +63,8 @@ Model names live in one file: `src/config/ai.ts`.
 4. Click **Deploy**.
 
 Notes:
-- AI routes set `maxDuration = 120` seconds (needs Vercel's default Fluid compute; on plans limited to 60 s, lower it in `src/app/api/*/route.ts`).
-- Vercel limits request bodies to ~4.5 MB, so PDFs over 4 MB are reviewed from their extracted text.
+- AI routes set `maxDuration = 120` seconds (allowed on the Hobby plan because `vercel.json` enables Fluid compute, which allows up to 300 s).
+- Vercel limits request bodies to ~4.5 MB, so uploads are capped at 3 MB (set in `src/config/limits.ts`).
 - **Rate limiting** (15 reviews/hour per IP) is in memory and therefore **best-effort on serverless**: each instance keeps its own count and resets on cold start. Use a shared store (e.g. Upstash Redis) for strict limits.
 
 ## Project structure

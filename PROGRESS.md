@@ -57,3 +57,8 @@ Re-checked the code against Section 13. All 10 phases are present in the code, s
 ## Audit — 2026-10-11
 Re-audited the code against Section 13: all 10 phases are present (routes, wizard, AI layer with fallback/BYOK/rate limit/mock, results, shortlist, SOP reviewer, README, 200 university files, fixtures). Nothing needed changing.
 `npm run check` passes (typecheck, lint, 51/51 tests, build). Dev server stays up; `/`, `/review`, `/sop`, `/shortlist` and a university JSON all return 200. `.env.local` exists with `MOCK_AI=false` (only that line checked).
+
+## Deploy prep — 2026-10-11
+- Upload cap lowered to 3 MB (`src/config/limits.ts`, `MAX_FILE_MB`); worst-case request ≈ 3.3 MB, under Vercel's 4.5 MB. Removed the old ">4 MB → text only" path. Too-big files show `FILE_TOO_LARGE_MESSAGE` in the browser, from the API route, and on Vercel's own plain-text 413.
+- `vercel.json` sets `"fluid": true` so `maxDuration = 120` on both AI routes is allowed on Hobby (Fluid limit 300 s).
+- Verified: 200 university JSON files tracked in git; only `.env.example` tracked; no API-key-like strings in tracked files or history.

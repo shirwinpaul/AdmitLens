@@ -3,7 +3,7 @@
  * turns a file into text so the student can preview it (and so the text-only fallback
  * model has something to read).
  */
-import { MAX_FILE_BYTES } from "@/config/limits";
+import { FILE_TOO_LARGE_MESSAGE, MAX_FILE_BYTES } from "@/config/limits";
 import { sanitizeDocumentText } from "./sanitize";
 
 /** A PDF with fewer characters than this is probably a scanned image. */
@@ -72,7 +72,7 @@ async function extractDocxText(file: File): Promise<string> {
 
 export async function extractFromFile(file: File): Promise<ExtractedDocument> {
   if (file.size > MAX_FILE_BYTES) {
-    throw new ExtractionError("This file is larger than 5 MB. Please upload a smaller file or paste the text.");
+    throw new ExtractionError(FILE_TOO_LARGE_MESSAGE);
   }
   const kind = detectKind(file);
   if (!kind) {
