@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+/* Dark mode is driven by a `.dark` class on <html> (set by ThemeToggle). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --surface-2: #eef0f8;
+  --ink: #0f1a3a;
+  --ink-muted: #4a5272;
+  --line: #dde1ee;
+  --navy: #0f1a3a;
+  --indigo: #3f46b8;
+  --indigo-soft: #e6e8fb;
+  --on-indigo: #ffffff;
+  --gold: #b07d12;
+  --gold-soft: #fbf1d9;
+  /* Band colours (text on soft background passes WCAG AA) */
+  --band-safety: #166534;
+  --band-safety-bg: #dcfce7;
+  --band-target: #854d0e;
+  --band-target-bg: #fef3c7;
+  --band-reach: #9a3412;
+  --band-reach-bg: #ffedd5;
+  --band-high: #991b1b;
+  --band-high-bg: #fee2e2;
+  --shadow: 0 1px 2px rgb(15 26 58 / 0.05), 0 8px 24px rgb(15 26 58 / 0.07);
+}
+
+.dark {
+  --bg: #0a1024;
+  --surface: #111a36;
+  --surface-2: #18234a;
+  --ink: #eef0fa;
+  --ink-muted: #a9b0cc;
+  --line: #26325c;
+  --navy: #eef0fa;
+  --indigo: #9ea6ff;
+  --indigo-soft: #232d63;
+  --on-indigo: #0a1024;
+  --gold: #f0c35a;
+  --gold-soft: #3a2f12;
+  --band-safety: #86efac;
+  --band-safety-bg: #0f2e1d;
+  --band-target: #fde68a;
+  --band-target-bg: #33280a;
+  --band-reach: #fdba74;
+  --band-reach-bg: #3a1d0b;
+  --band-high: #fca5a5;
+  --band-high-bg: #3b1212;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.35);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-navy: var(--navy);
+  --color-indigo: var(--indigo);
+  --color-indigo-soft: var(--indigo-soft);
+  --color-on-indigo: var(--on-indigo);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --shadow-card: var(--shadow);
+}
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--indigo);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print / "Download report" — only the report is printed, in light colours. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  html,
+  html.dark {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f4f4f4;
+    --ink: #000000;
+    --ink-muted: #333333;
+    --line: #cccccc;
+    --indigo: #2b318a;
+    --shadow: none;
+    --band-safety: #166534;
+    --band-safety-bg: #dcfce7;
+    --band-target: #854d0e;
+    --band-target-bg: #fef3c7;
+    --band-reach: #9a3412;
+    --band-reach-bg: #ffedd5;
+    --band-high: #991b1b;
+    --band-high-bg: #fee2e2;
+    color-scheme: light;
+  }
+  body {
+    background: #fff;
+  }
+  .print-break {
+    break-inside: avoid;
+  }
+  [data-print-expand] {
+    display: block !important;
+  }
+}
+.print-only {
+  display: none;
+}

@@ -1,0 +1,17 @@
+Aarav Testperson
+Email: aarav.test@example.com | Phone: +00 00000 00000 | City: Exampletown
+EDUCATION
+B.Tech Computer Science, Example Institute of Technology, 2022 to 2026, CGPA 8.4/10
+Class 12, Example Public School, CBSE board, 91 percent aggregate
+PROJECTS
+Built a movie recommendation system using collaborative filtering in Python
+Developed a campus event app used by students in my college
+Created a weather dashboard with React that shows forecasts for five cities
+EXPERIENCE
+Software intern at Example Labs Pvt Ltd, worked on data pipelines for reporting
+Teaching assistant for the Introduction to Programming course for one semester
+ACHIEVEMENTS
+Finalist in a national-level college hackathon organised by Example Foundation
+Volunteer teacher teaching basic coding to school children on weekends
+SKILLS
+Python, SQL, React, pandas, scikit-learn, Git, basic cloud deployment
